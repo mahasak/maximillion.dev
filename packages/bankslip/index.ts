@@ -2,7 +2,7 @@ import express, { type Express, type Request, type Response } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { redisClient } from '@maximillion/shared';
+import { genOrderId, redisClient } from '@maximillion/shared';
 import type { ChangesEvent, MessagingEvent, WrappedMessage } from '@maximillion/shared/types';
 import { bankslipDetectionChangesHook, bankslipDetectionMessageHook, bankslipDetectionPostbackHook, bankslipDetectionQuickReplyHook } from './service/bankslip';
 const app: Express = express();
@@ -16,6 +16,9 @@ app.get('/', async (req: Request, res: Response) => {
 
 app.listen(port, async () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+  
+
+  
   (async () => {
     const subscriber = redisClient.duplicate();
 

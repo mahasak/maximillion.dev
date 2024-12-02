@@ -16,7 +16,7 @@ export const db_pool = new Pool({
 export const isEligble = async (page_id: string) => {
   console.log('checking eligibility');
   try {
-    const query = "select ref_id from merchant_channel where ref_type = 'FACEBOOK_PAGE' and ref_id = $1"
+    const query = "SELECT ref_id FROM merchant_channel WHERE ref_type = 'FACEBOOK_PAGE' and ref_id = $1"
     const result = await db_pool.query(query, [page_id]);
     
     return (result.rowCount ?? 0) > 0;
@@ -28,7 +28,7 @@ export const isEligble = async (page_id: string) => {
 export const getTopic = async (page_id: string): Promise<string[]> => {
   try {
     const data: string[] = [];
-    const query = "select ap.topic as topic from merchant_channel mc inner join application_registry ar on ar.channel_id = mc.id inner join application ap on ar.app_id = ap.id where mc.ref_type = 'FACEBOOK_PAGE' and mc.ref_id = $1";
+    const query = "SELECT ap.topic as topic FROM merchant_channel mc INNER JOIN application_registry ar ON ar.channel_id = mc.id INNER JOIN application ap ON ar.app_id = ap.id WHERE mc.ref_type = 'FACEBOOK_PAGE' AND mc.ref_id = $1";
     const result = await db_pool.query(query, [page_id]);    
     
     result.rows.forEach((row: any) => {
@@ -50,20 +50,32 @@ export const genChannelData = async (channel_type: string, page_id: string) => {
       return JSON.parse(cachedData);
   }
 
-    const query = "select ref_type, token, name from merchant_channel mc where mc.ref_type = 'FACEBOOK_PAGE' and mc.ref_id = $1"
+    const query = "SELECT ref_type, token, name FROM merchant_channel mc WHERE mc.ref_type = 'FACEBOOK_PAGE' AND mc.ref_id = $1"
     const result = await db_pool.query(query, [page_id]);    
     const config = result.rows[0];
-    
+
     await redisCache.setItem(cacheKey, JSON.stringify(config), {isCachedForever: true});
     return config;
   } catch (err) {
     return [];
-  }
-
-  
-
-  
+  }  
 }
+
+export const genOrderId = async (shop_id: string): Promise<string> => {
+  try {
+    const query = "UPDATE sequencers SET data = data + 1 WHERE name = $1 RETURNING data";
+    const result = await db_pool.query(query, [shop_id]);    
+
+    const row = result.rows[0];
+    
+    return row.data.toString().padStart(5, '0');
+  } catch (err) {
+    console.log(err);
+    return "XXXXX";
+  }
+}
+
+
 
 export const clearChannelCache =  async (channel_type: string, page_id: string) => {
   const cacheKey = `FEMTO_${channel_type}_${page_id}`;
