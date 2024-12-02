@@ -7,5 +7,12 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.5",
+    "ioredis": "^5.4.1",
+    "node-ts-cache": "^4.4.0",
+    "node-ts-cache-storage-ioredis": "^4.4.0"
   }
 }

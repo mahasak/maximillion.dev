@@ -1,3 +1,4 @@
-import { common } from '@maximillion/shared'
+import { common, getRedisClient } from '@maximillion/shared'
 
 common()
+console.log(getRedisClient);
