@@ -41,6 +41,30 @@ export const getTopic = async (page_id: string): Promise<string[]> => {
   }
 }
 
+export const genChannelData = async (channel_type: string, page_id: string) => {
+  try {
+    const cacheKey = `FEMTO_${channel_type}_${page_id}`;
+    const cachedData = await redisCache.getItem<string>(cacheKey);
+
+    if (cachedData) {
+      return JSON.parse(cachedData);
+  }
+
+    const query = "select ref_type, token, name from merchant_channel mc where mc.ref_type = 'FACEBOOK_PAGE' and mc.ref_id = $1"
+    const result = await db_pool.query(query, [page_id]);    
+    const config = result.rows[0];
+    
+    await redisCache.setItem(cacheKey, JSON.stringify(config), {isCachedForever: true});
+    return config;
+  } catch (err) {
+    return [];
+  }
+
+  
+
+  
+}
+
 export const clearChannelCache =  async (channel_type: string, page_id: string) => {
   const cacheKey = `FEMTO_${channel_type}_${page_id}`;
   await redisCache.setItem(cacheKey,undefined,{ttl:0,isCachedForever: false, isLazy: false})
