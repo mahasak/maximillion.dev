@@ -3,3 +3,4 @@ export function common() {
 }
 
 export * from './cache'
+export * from './data'

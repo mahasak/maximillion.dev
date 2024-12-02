@@ -1,13 +1,10 @@
 import colors from 'colors';
-import { getRedisClient } from "./cache";
+import { redisClient } from "./cache";
 import { FemtoLogLevel } from "./types"
 export const debug = (label: string, ...data: any[]) => {
   console.log(colors.yellow(`---------- debug: ${label} ----------`))
   data.forEach(item => console.log(colors.yellow(item)))
 }
-
-// init redis client
-const redisClient = getRedisClient();
 
 export const log = async (level: FemtoLogLevel, trace_id: string, contents: any) => {
   const log_object = {
