@@ -1,0 +1,14 @@
+{
+  "name": "@maximillion/gateway",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "@maximillion/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

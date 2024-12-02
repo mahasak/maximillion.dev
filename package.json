@@ -1,0 +1,17 @@
+{
+  "name": "workpace",
+  "private": "true",
+  "module": "index.ts",
+  "type": "module",
+  "workspaces": [
+    "packages/bankslip",
+    "packages/gateway",
+    "packages/shared"
+  ],
+  "scripts": {
+    "clean": "bun run clean:app && bun run clean:shared",
+    "clean:app": "rm -rf node_modules shared/config/node_modules shared/logger/node_modules bun.lockb shared/config/bun.lockb shared/logger/bun.lockb",
+    "clean:shared": "rm -rf node_modules apps/bankslip/node_modules apps/gateway/node_modules bun.lockb apps/bankslip/bun.lock bapps/gateway/bun.lockb"
+    
+  }
+}
