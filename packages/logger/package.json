@@ -1,22 +1,18 @@
 {
-  "name": "@maximillion/shared",
+  "name": "@maximillion/logger",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/pg": "^8.11.10"
+    "@types/express": "^5.0.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "@datalust/winston-seq": "^2.0.0",
-    "colors": "^1.4.0",
-    "dotenv": "^16.4.5",
-    "ioredis": "^5.4.1",
-    "node-ts-cache": "^4.4.0",
-    "node-ts-cache-storage-ioredis": "^4.4.0",
-    "pg": "^8.13.1",
+    "@maximillion/shared": "workspace:*",
+    "express": "^4.21.1",
     "winston": "^3.17.0"
   }
 }
